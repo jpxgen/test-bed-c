@@ -3,8 +3,8 @@
   "station": "test",
   "head": "16995cce6d5f032ed9f7af6f5ea3cd5e6685f605",
   "attempt": 1,
-  "lease_expires_at": "2026-09-15T18:33:58.426Z",
-  "run_url": null,
+  "lease_expires_at": "2026-09-15T18:39:36.818Z",
+  "run_url": "pending",
   "blocked_reason": null,
-  "updated_at": "2026-09-15T17:33:58.426Z"
+  "updated_at": "2026-09-15T17:39:36.818Z"
 }
