@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "7b9604cdb29c662cad7415b61fd7bc660d574667",
+  "round": 1,
+  "findings": [
+    {
+      "file": "python/tests/test_pager.py",
+      "line": 87,
+      "severity": "nit",
+      "category": "tests",
+      "rule": "",
+      "evidence": "python/tests/test_pager.py:87-90 `def _page_count(): import pager; return pager.page_count` and the comment at lines 82-84 exist only so the module import survived before the implementation landed; `paginate` at line 6 is imported at module top like the rest of the file, and `page_count` now exists, so the indirection is leftover scaffolding.",
+      "fix": "Add `page_count` to the top-level `from pager import paginate` import, call it directly in the wp-4 tests, and delete `_page_count()` and the explanatory comment at lines 82-84."
+    }
+  ]
+}
