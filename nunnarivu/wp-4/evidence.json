@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "issue": 4,
+  "type": "logic",
+  "tests": ["python/tests/test_pager.py"],
+  "implementation": ["python/src/pager/__init__.py"],
+  "notes": "The new tests in python/tests/test_pager.py prove that pager.page_count(items, size) returns the number of pages paginate(items, size) would build: five items at two per page give 3, four at two give 2, one at three gives 1, and an empty list gives 0, always as an int. A parametrized test checks page_count equals len(paginate(...)) across those cases plus a seven-item and a ten-item list, so a shorter final page counts as a page. A sequence that raises on slicing or iteration confirms the count is computed without building the pages. Size 0 and -3 raise ValueError for both a non-empty and an empty list, matching paginate's rejection, which now shares the _check_size helper. The existing paginate and command-line tests are unchanged and still pass."
+}
