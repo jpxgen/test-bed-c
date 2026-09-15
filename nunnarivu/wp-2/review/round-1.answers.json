@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "round": 1,
+  "head": "b2aca63449382b16555c2e68ae5a13d2f3853908",
+  "answers": [
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 36,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "The assumption test now also asserts slugify('Håkon Ørsted') === 'hakon-rsted', pinning that 'ø' has no ASCII base and acts as a separator rather than folding to 'o'."
+    },
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 28,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "The shape test keeps the equality for 'Ünïcode & Numbers 123' and now applies the /^[a-z0-9]+(?:-[a-z0-9]+)*$/ regex to slugify() of every non-empty case in the suite (plain, whitespace, accented, punctuation, hyphen-wrapped, 'Straße', 'Håkon Ørsted'), each with a message naming the title, so the assertion can fail independently of the equality."
+    },
+    {
+      "file": "ts/src/slug.ts",
+      "line": 5,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "The doc comment now says that only the combining diacritical marks U+0300-U+036F are dropped after NFD decomposition, and that any combining mark outside that block acts as a separator like the other non-ASCII characters."
+    }
+  ]
+}

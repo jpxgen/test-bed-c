@@ -23,9 +23,20 @@ test('no hyphen at either end and interior hyphen runs collapse', () => {
 });
 
 test('result contains only lower-case ASCII letters, digits and single interior hyphens', () => {
-  const slug = slugify('Ünïcode & Numbers 123');
-  assert.equal(slug, 'unicode-numbers-123');
-  assert.match(slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+  assert.equal(slugify('Ünïcode & Numbers 123'), 'unicode-numbers-123');
+  const shape = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  for (const title of [
+    'Hello World',
+    '  spaced   out ',
+    'Crème Brûlée',
+    'Hello, World!',
+    '--Already--Slugged--',
+    'Ünïcode & Numbers 123',
+    'Straße',
+    'Håkon Ørsted',
+  ]) {
+    assert.match(slugify(title), shape, `slugify(${JSON.stringify(title)})`);
+  }
 });
 
 test('a title with no letters or digits gives the empty string (assumption)', () => {
@@ -35,4 +46,5 @@ test('a title with no letters or digits gives the empty string (assumption)', ()
 
 test('letters with no ASCII base under decomposition become a hyphen (assumption)', () => {
   assert.equal(slugify('Straße'), 'stra-e');
+  assert.equal(slugify('Håkon Ørsted'), 'hakon-rsted');
 });
