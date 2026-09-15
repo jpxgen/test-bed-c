@@ -1,5 +1,10 @@
 {
   "write_sets": {
+    "4": [
+      "python/src/pager/__init__.py",
+      "python/tests/test_pager.py",
+      "nunnarivu/wp-4/"
+    ],
     "5": [
       "ts/src/slug.ts",
       "ts/test/slug.test.ts",
