@@ -1,10 +1,10 @@
 {
   "issue": 3,
-  "station": "test",
-  "head": "cd0bae2dc09d6112f8862722cba4ff7bd4580a45",
+  "station": "build",
+  "head": "20efef5e0669607861affad5083820710329597a",
   "attempt": 1,
-  "lease_expires_at": "2026-09-15T18:39:43.157Z",
-  "run_url": "pending",
+  "lease_expires_at": "2026-09-15T18:41:50.159Z",
+  "run_url": null,
   "blocked_reason": null,
-  "updated_at": "2026-09-15T17:39:43.157Z"
+  "updated_at": "2026-09-15T17:41:50.159Z"
 }
