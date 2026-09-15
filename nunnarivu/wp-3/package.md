@@ -22,3 +22,7 @@ nunnarivu/wp-3/
 ## Evidence
 
 type: logic
+
+## Notes
+
+The evidence check (`builtin:test-before-after`) runs `scripts/test-scoped.sh` twice in one worktree: first on the branch head, then with `python/src/pager/cli.py` restored to the base commit. Python decides whether a cached `__pycache__/*.pyc` is fresh from the source's mtime (whole seconds) and size, so when the restored file has the same size as the fixed one and both writes land in the same second, the second run imports the first run's bytecode and the check passes or fails by timing. The fix is `export PYTHONDONTWRITEBYTECODE=1` in `scripts/test-scoped.sh` before its pytest run; `scripts/` is outside this package's write set, so that change is left for the owner or a package whose write set includes `scripts/`. This package sidesteps the coincidence for itself: its fixed `cli.py` differs in size from the base, which invalidates the cache regardless of timing.

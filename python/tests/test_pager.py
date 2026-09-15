@@ -40,6 +40,19 @@ def test_cli_prints_all_five_lines_as_three_pages():
     assert result.stdout == "a\nb\n\nc\nd\n\ne\n"
 
 
+def test_cli_prints_three_lines_as_two_pages_with_nothing_on_stderr():
+    result = subprocess.run(
+        [sys.executable, "-m", "pager", "--size", "2"],
+        input="a\nb\nc\n",
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0
+    assert result.stdout == "a\nb\n\nc\n"
+    assert result.stderr == ""
+
+
 @pytest.mark.parametrize("size", ["0", "-3"])
 def test_cli_rejects_non_positive_size_with_status_2(size):
     result = subprocess.run(

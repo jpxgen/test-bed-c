@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "round": 2,
+  "head": "0c7c3f0b8d7a77939b92112e2ef0508452d57118",
+  "answers": [
+    {
+      "file": "scripts/test-scoped.sh",
+      "line": 24,
+      "rule": ".nunnarivu/skills/isolate/SKILL.md step 3 (\"Later stations touch nothing outside it\") and .nunnarivu/skills/build/SKILL.md step 3 (\"When a change outside the write set is unavoidable, do not make it: write what is missing under a `## Notes` section of nunnarivu/wp-<issue>/package.md\")",
+      "outcome": "fixed",
+      "note": "Restored scripts/test-scoped.sh to the base commit 6a4dc46 and added a `## Notes` section to nunnarivu/wp-3/package.md that states the evidence check needs `export PYTHONDONTWRITEBYTECODE=1` in scripts/test-scoped.sh before its pytest run, why (same-size source written within the same second is masked by the first run's .pyc), and that the change is left for the owner or a package whose write set includes scripts/. Within the write set, a two-line comment on the early return in cli.py makes the fixed file 898 bytes against the base's 749, so the .pyc is invalidated by size and this package's check no longer depends on timing: `node .nunnarivu/bin/nunnarivu evidence check` printed [pass] on three consecutive runs with the script reverted."
+    },
+    {
+      "file": "nunnarivu/wp-3/evidence.json",
+      "line": 8,
+      "rule": ".nunnarivu/skills/prove/SKILL.md step 3 (\"implementation: every non-test file this package changed, except files under nunnarivu/wp-<issue>/ ... Every changed file goes in exactly one of the two lists\") and .nunnarivu/skills/fix/SKILL.md step 4",
+      "outcome": "fixed",
+      "note": "scripts/test-scoped.sh is reverted, so the branch no longer changes it and the implementation list stays python/src/pager/cli.py alone; `git diff --name-only 6a4dc46` now lists only the two write-set files and nunnarivu/wp-3/. The evidence check passes with the lists as they are."
+    },
+    {
+      "file": "python/tests/test_pager.py",
+      "line": null,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "Added test_cli_prints_three_lines_as_two_pages_with_nothing_on_stderr: it runs [sys.executable, \"-m\", \"pager\", \"--size\", \"2\"] with input \"a\\nb\\nc\\n\" and asserts returncode == 0, stdout == \"a\\nb\\n\\nc\\n\" and stderr == \"\". The notes in evidence.json now name that test for criterion 3 and describe test_cli_prints_all_five_lines_as_three_pages as the five-line run it is."
+    }
+  ]
+}
