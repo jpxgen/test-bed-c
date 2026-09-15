@@ -1,10 +1,10 @@
 {
   "issue": 4,
-  "station": "ready",
+  "station": "isolate",
   "head": null,
   "attempt": 1,
-  "lease_expires_at": null,
-  "run_url": null,
+  "lease_expires_at": "2026-09-15T20:02:12.008Z",
+  "run_url": "pending",
   "blocked_reason": null,
-  "updated_at": "2026-09-15T19:02:03.459Z"
+  "updated_at": "2026-09-15T19:02:12.008Z"
 }
