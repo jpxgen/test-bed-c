@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "round": 1,
+  "head": "7bfb9a0f8d0f00730572a7a152c6d35b4e1cbd9a",
+  "answers": [
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 59,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "Replaced the `as` cast with a typed declaration, `const slugifyWithLimit: (title: string, maxLength?: number) => string = slugify;`, and updated the comment. tsc now checks the real signature: an options-object second parameter fails with TS2322 (verified locally), while the base one-argument slugify still compiles, so the wp-5 tests still fail at run time rather than at compile time before the implementation."
+    },
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 61,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "Hoisted one `const titles = [...]` to the top of the file; the shape test iterates it directly and the wp-5 property test uses `[...titles, '!!!', '']`, adding only the two titles that slug to the empty string, which the shape regex cannot accept. A title added to `titles` is now covered by both tests."
+    }
+  ]
+}

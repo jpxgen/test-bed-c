@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "issue": 5,
+  "type": "logic",
+  "tests": ["ts/test/slug.test.ts"],
+  "implementation": ["ts/src/slug.ts"],
+  "notes": "The tests prove that slugify with an optional maxLength keeps every existing one-argument result unchanged, never returns a slug longer than the limit or ending in a hyphen (checked for every existing title and every limit from 1 to 30), cuts between words where it can ('Hello Wonderful World' at 10 gives 'hello', at 15 gives 'hello-wonderful', at 100 gives the full slug), keeps a word whose end or trailing hyphen lands exactly on the limit, cuts a first word that alone exceeds the limit to the limit ('Wonderful' at 3 gives 'won'), leaves a slug at or under the limit unchanged, returns '' for a title with no letters or digits under any valid limit, and throws a RangeError for a limit below one or a non-integer limit (including NaN and Infinity) before the title is looked at. Without the implementation the new tests fail because the second argument is ignored."
+}
