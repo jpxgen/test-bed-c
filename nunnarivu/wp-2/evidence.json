@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "issue": 2,
+  "type": "logic",
+  "tests": ["ts/test/slug.test.ts"],
+  "implementation": ["ts/src/slug.ts"],
+  "notes": "The added tests prove that slugify folds accented letters to their plain base letters ('Crème Brûlée' gives 'creme-brulee'), turns every run of characters that are neither letters nor digits into one hyphen ('Hello, World!' gives 'hello-world'), strips hyphens from both ends and collapses interior hyphen runs ('--Already--Slugged--' gives 'already-slugged'), and that the result matches only lower-case ASCII letters, digits and single interior hyphens ('Ünïcode & Numbers 123' gives 'unicode-numbers-123'). Two assumption tests pin the edge cases: a title with no letters or digits ('!!!' or '') gives the empty string, and a letter with no ASCII base under decomposition ('ß' in 'Straße') acts as a separator, giving 'stra-e'. The pre-existing tests confirm that plain titles and whitespace collapsing are unchanged. With the implementation restored to the base commit, slugify only lower-cases, trims and replaces whitespace runs, so accents and punctuation pass through and the six new tests fail."
+}
