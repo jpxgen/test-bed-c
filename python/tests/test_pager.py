@@ -4,6 +4,7 @@ import sys
 import pytest
 
 from pager import paginate
+from pager.cli import main
 
 
 def test_full_pages():
@@ -47,6 +48,31 @@ def test_cli_rejects_size_below_one():
         text=True,
         check=False,
     )
-    assert result.returncode == 0
+    assert result.returncode == 2
     assert result.stdout == ""
     assert "--size must be a positive integer" in result.stderr
+
+
+def test_cli_rejects_negative_size_with_status_2():
+    result = subprocess.run(
+        [sys.executable, "-m", "pager", "--size", "-3"],
+        input="a\nb\n",
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert "--size must be a positive integer" in result.stderr
+
+
+def test_cli_invalid_size_is_rejected_before_stdin_is_read(monkeypatch, capsys):
+    class UnreadStdin:
+        def __iter__(self):
+            raise AssertionError("stdin was read before --size was validated")
+
+    monkeypatch.setattr(sys, "stdin", UnreadStdin())
+    assert main(["--size", "0"]) == 2
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "--size must be a positive integer" in captured.err
