@@ -21,6 +21,11 @@ for file in "$@"; do
 done
 
 bash scripts/toolchain.sh
+# The evidence checker runs this twice in one worktree, with and without the
+# implementation, often within the same second. A .pyc written by the first run
+# is taken as fresh by the second when the restored source has the same size and
+# mtime second, so the second run would import the first run's bytecode.
+export PYTHONDONTWRITEBYTECODE=1
 status=0
 if [ "${#python_tests[@]}" -gt 0 ]; then
   (cd python && uv sync --frozen --quiet && uv run --frozen pytest -q "${python_tests[@]}") || status=1

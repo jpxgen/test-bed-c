@@ -2,7 +2,11 @@
   "schema": 1,
   "issue": 3,
   "type": "logic",
-  "tests": ["python/tests/test_pager.py"],
-  "implementation": ["python/src/pager/cli.py"],
-  "notes": "The tests prove that the command-line entry point rejects a non-positive --size with exit status 2 rather than 0: test_cli_rejects_size_below_one (revised from pinning status 0) and test_cli_rejects_negative_size_with_status_2 run the tool as a subprocess with --size 0 and --size -3 and assert status 2, empty stdout and the '--size must be a positive integer' message on stderr; test_cli_invalid_size_is_rejected_before_stdin_is_read calls main() directly with a stdin that raises on iteration, proving the rejection happens before input is consumed. The unchanged tests confirm valid runs (three lines with --size 2 giving 'a', 'b', a blank line, 'c') and the paginate library function are untouched. With cli.py restored to the base commit the tool still returns 0 for an invalid size, so all three of those tests fail."
+  "tests": [
+    "python/tests/test_pager.py"
+  ],
+  "implementation": [
+    "python/src/pager/cli.py"
+  ],
+  "notes": "The tests prove that the command-line entry point rejects a non-positive --size with exit status 2 rather than 0: test_cli_rejects_non_positive_size_with_status_2 (parametrized over --size 0 and --size -3; the --size 0 case is revised from pinning status 0) runs the tool as a subprocess and asserts status 2, empty stdout and the '--size must be a positive integer' message on stderr; test_cli_invalid_size_is_rejected_before_stdin_is_read calls main() directly with a stdin that raises on iteration, proving the rejection happens before input is consumed. The unchanged tests confirm valid runs (three lines with --size 2 giving 'a', 'b', a blank line, 'c') and the paginate library function are untouched. With cli.py restored to the base commit the tool still returns 0 for an invalid size, so all three of those test cases fail."
 }
