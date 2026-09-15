@@ -13,7 +13,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.size < 1:
         print("pager: --size must be a positive integer", file=sys.stderr)
-        return 0
+        return 2
     lines = [line.rstrip("\n") for line in sys.stdin]
     for index, page in enumerate(paginate(lines, args.size)):
         if index:
