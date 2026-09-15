@@ -2,6 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { slugify } from '../src/slug.js';
 
+// Every title with letters or digits that the tests below slugify. The shape
+// test and the wp-5 length property both run over this one list, so a title
+// added here is covered by both.
+const titles = [
+  'Hello World',
+  '  spaced   out ',
+  'Crème Brûlée',
+  'Hello, World!',
+  '--Already--Slugged--',
+  'Ünïcode & Numbers 123',
+  'Straße',
+  'Håkon Ørsted',
+];
+
 test('words become hyphenated lower case', () => {
   assert.equal(slugify('Hello World'), 'hello-world');
 });
@@ -25,16 +39,7 @@ test('no hyphen at either end and interior hyphen runs collapse', () => {
 test('result contains only lower-case ASCII letters, digits and single interior hyphens', () => {
   assert.equal(slugify('Ünïcode & Numbers 123'), 'unicode-numbers-123');
   const shape = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-  for (const title of [
-    'Hello World',
-    '  spaced   out ',
-    'Crème Brûlée',
-    'Hello, World!',
-    '--Already--Slugged--',
-    'Ünïcode & Numbers 123',
-    'Straße',
-    'Håkon Ørsted',
-  ]) {
+  for (const title of titles) {
     assert.match(slugify(title), shape, `slugify(${JSON.stringify(title)})`);
   }
 });
@@ -53,23 +58,16 @@ test('letters with no ASCII base under decomposition become a hyphen (assumption
 //
 // The suite compiles with tsc before it runs, and a compile error would stop
 // every test above from running. So the two-argument calls below go through
-// this alias, which carries the signature the criteria ask for. Until slugify
-// declares the second parameter these tests fail at run time, where they can
-// be counted, rather than at compile time.
-const slugifyWithLimit = slugify as (title: string, maxLength?: number) => string;
+// this alias, declared with the signature the criteria ask for. A one-argument
+// slugify is assignable to it, so until slugify declares the second parameter
+// these tests fail at run time, where they can be counted, rather than at
+// compile time; a slugify whose second parameter has another shape fails to
+// compile, so the declared signature is checked by tsc.
+const slugifyWithLimit: (title: string, maxLength?: number) => string = slugify;
 
-const existingTitles = [
-  'Hello World',
-  '  spaced   out ',
-  'Crème Brûlée',
-  'Hello, World!',
-  '--Already--Slugged--',
-  'Ünïcode & Numbers 123',
-  'Straße',
-  'Håkon Ørsted',
-  '!!!',
-  '',
-];
+// The shared titles plus the two that slug to the empty string, which the
+// shape test above cannot include.
+const existingTitles = [...titles, '!!!', ''];
 
 test('wp-5: with a limit, the result is never longer than the limit and never ends with a hyphen', () => {
   for (const title of existingTitles) {
