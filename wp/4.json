@@ -1,10 +1,10 @@
 {
   "issue": 4,
   "station": "review",
-  "head": "7b9604cdb29c662cad7415b61fd7bc660d574667",
+  "head": "23699226c3e609c6375d7d7eb60adf285e07d2b1",
   "attempt": 1,
   "lease_expires_at": "2026-09-15T20:46:08.306Z",
-  "run_url": "session_01N8x9MexuSmEKt1zFYcN8Gg",
+  "run_url": null,
   "blocked_reason": null,
-  "updated_at": "2026-09-15T19:47:23.264Z"
+  "updated_at": "2026-09-15T19:49:42.851Z"
 }
