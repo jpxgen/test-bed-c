@@ -12,6 +12,6 @@ def paginate(items: Sequence, size: int) -> list[list]:
     if size < 1:
         raise ValueError("size must be a positive integer")
     pages = []
-    for start in range(0, len(items) - size + 1, size):
+    for start in range(0, len(items), size):
         pages.append(list(items[start : start + size]))
     return pages
