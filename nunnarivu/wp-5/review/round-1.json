@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "7bfb9a0f8d0f00730572a7a152c6d35b4e1cbd9a",
+  "round": 1,
+  "findings": [
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 59,
+      "severity": "minor",
+      "category": "tests",
+      "rule": "",
+      "evidence": "ts/test/slug.test.ts:59 `const slugifyWithLimit = slugify as (title: string, maxLength?: number) => string;` — every wp-5 call goes through this assertion, so tsc never checks the real signature and the type half of the criterion in nunnarivu/wp-5/package.md:7 (\"`slugify` takes an optional second argument, `maxLength`, so it is called as `slugify(title, maxLength?)`\") is unverified. Reproduced in a scratch copy of ts/: changing the implementation to `export function slugify(title: string, opts?: { max: number }): string { const maxLength = opts?.max; ... }` still compiles clean — `pnpm exec tsc -p tsconfig.json --noEmit` exits 0 — because the cast absorbs the mismatch; the signature the criteria ask for is then gone with no compile-time complaint.",
+      "fix": "Replace the cast with a typed declaration: `const slugifyWithLimit: (title: string, maxLength?: number) => string = slugify;` (or call `slugify(title, limit)` directly and delete the alias and its comment). Verified in the scratch copy: against the same options-object signature this errors with TS2322 \"Types of parameters 'opts' and 'maxLength' are incompatible\", and against the base one-argument slugify of 2edeb40 it still compiles and the eight wp-5 tests fail at run time, so the run-time-failure property the comment at ts/test/slug.test.ts:52-58 protects, and the test-before-after evidence check, both still hold."
+    },
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 61,
+      "severity": "nit",
+      "category": "tests",
+      "rule": "",
+      "evidence": "ts/test/slug.test.ts:61-72 `const existingTitles = [...]` hand-copies the title list that already exists at ts/test/slug.test.ts:28-37 (plus '!!!' and ''). The criterion at nunnarivu/wp-5/package.md:9 is stated over \"every title in the existing test file\", so a title added to one list and not the other silently drops out of the length-and-hyphen property test while the file still looks exhaustive.",
+      "fix": "Hoist one `const titles = [...]` to the top of ts/test/slug.test.ts and use it both in the shape test at line 28 and in the wp-5 property test, so the two lists cannot drift apart."
+    }
+  ]
+}
