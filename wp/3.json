@@ -1,10 +1,10 @@
 {
   "issue": 3,
-  "station": "review",
+  "station": "merge",
   "head": "16a861c30750d661b62e00eb12ecabfadec2b610",
   "attempt": 1,
-  "lease_expires_at": "2026-09-15T19:51:03.665Z",
-  "run_url": "session_01VcL1iBHr9VpC6Rg1PJdbXX",
+  "lease_expires_at": "2026-09-15T19:55:28.739Z",
+  "run_url": "https://github.com/jpxgen/test-bed-c/pull/8",
   "blocked_reason": null,
-  "updated_at": "2026-09-15T18:53:30.892Z"
+  "updated_at": "2026-09-15T18:55:28.739Z"
 }
