@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "round": 1,
+  "head": "7b9604cdb29c662cad7415b61fd7bc660d574667",
+  "answers": [
+    {
+      "file": "python/tests/test_pager.py",
+      "line": 87,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "page_count is now imported at module top alongside paginate; the wp-4 tests call it directly and the _page_count() helper and its explanatory comment are gone."
+    }
+  ]
+}

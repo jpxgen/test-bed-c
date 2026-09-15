@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from pager import paginate
+from pager import page_count, paginate
 from pager.cli import main
 
 
@@ -80,14 +80,6 @@ def test_cli_invalid_size_is_rejected_before_stdin_is_read(monkeypatch, capsys):
 
 
 # wp-4: page_count(items, size) reports how many pages paginate would build.
-# It is looked up on the module inside each test so a missing function fails
-# only these tests, not the import of the whole file.
-
-
-def _page_count():
-    import pager
-
-    return pager.page_count
 
 
 def test_page_count_is_exported_by_the_pager_package():
@@ -97,23 +89,23 @@ def test_page_count_is_exported_by_the_pager_package():
 
 
 def test_page_count_five_items_at_two_per_page_needs_three_pages():
-    assert _page_count()([1, 2, 3, 4, 5], 2) == 3
+    assert page_count([1, 2, 3, 4, 5], 2) == 3
 
 
 def test_page_count_four_items_at_two_per_page_needs_two_pages():
-    assert _page_count()([1, 2, 3, 4], 2) == 2
+    assert page_count([1, 2, 3, 4], 2) == 2
 
 
 def test_page_count_one_item_at_three_per_page_needs_one_page():
-    assert _page_count()([1], 3) == 1
+    assert page_count([1], 3) == 1
 
 
 def test_page_count_empty_list_needs_no_pages():
-    assert _page_count()([], 3) == 0
+    assert page_count([], 3) == 0
 
 
 def test_page_count_returns_an_int():
-    assert type(_page_count()([1, 2, 3], 2)) is int
+    assert type(page_count([1, 2, 3], 2)) is int
 
 
 @pytest.mark.parametrize(
@@ -128,7 +120,7 @@ def test_page_count_returns_an_int():
     ],
 )
 def test_page_count_shorter_final_page_counts_matches_paginate(items, size):
-    assert _page_count()(items, size) == len(paginate(items, size))
+    assert page_count(items, size) == len(paginate(items, size))
 
 
 def test_page_count_does_not_build_the_pages():
@@ -141,16 +133,16 @@ def test_page_count_does_not_build_the_pages():
         def __iter__(self):
             raise AssertionError("page_count iterated the items")
 
-    assert _page_count()(Unsliceable([1, 2, 3, 4, 5]), 2) == 3
+    assert page_count(Unsliceable([1, 2, 3, 4, 5]), 2) == 3
 
 
 @pytest.mark.parametrize("size", [0, -3])
 def test_page_count_rejects_size_below_one_like_paginate(size):
     with pytest.raises(ValueError):
-        _page_count()([1], size)
+        page_count([1], size)
 
 
 @pytest.mark.parametrize("size", [0, -3])
 def test_page_count_rejects_size_below_one_even_for_an_empty_list(size):
     with pytest.raises(ValueError):
-        _page_count()([], size)
+        page_count([], size)
