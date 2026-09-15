@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "round": 1,
+  "head": "5113fd02a365b7861f67ff6e93985d4fd2737fca",
+  "answers": [
+    {
+      "file": "python/tests/test_pager.py",
+      "line": 56,
+      "rule": "",
+      "outcome": "fixed",
+      "note": "Collapsed test_cli_rejects_size_below_one and test_cli_rejects_negative_size_with_status_2 into one test, test_cli_rejects_non_positive_size_with_status_2, decorated with @pytest.mark.parametrize(\"size\", [\"0\", \"-3\"]). Both cases still run the tool as a subprocess and keep the three assertions (status 2, empty stdout, the error message on stderr). The evidence notes name the new test. While re-running the evidence check, scripts/test-scoped.sh gained PYTHONDONTWRITEBYTECODE=1: the checker's second run (implementation restored to the base) reused the first run's cli.pyc because the base and fixed cli.py have the same size and were written within the same second, which made the check pass or fail by timing."
+    }
+  ]
+}
