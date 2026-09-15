@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "0c7c3f0b8d7a77939b92112e2ef0508452d57118",
+  "round": 2,
+  "findings": [
+    {
+      "file": "scripts/test-scoped.sh",
+      "line": 24,
+      "severity": "major",
+      "category": "design",
+      "rule": ".nunnarivu/skills/isolate/SKILL.md step 3 (\"Later stations touch nothing outside it\") and .nunnarivu/skills/build/SKILL.md step 3 (\"When a change outside the write set is unavoidable, do not make it: write what is missing under a `## Notes` section of nunnarivu/wp-<issue>/package.md\")",
+      "evidence": "nunnarivu/wp-3/package.md:16-20 declares the write set as `python/src/pager/cli.py`, `python/tests/test_pager.py` and `nunnarivu/wp-3/`; `git show --stat 0c7c3f0` lists `scripts/test-scoped.sh | 5 +++++`, and scripts/test-scoped.sh:24-28 adds the comment and `export PYTHONDONTWRITEBYTECODE=1`; package.md has no `## Notes` section. The change itself is well founded (reproduced in a scratch copy: with the head cli.py compiled first, then the base cli.py written with the same 749-byte size and the same mtime second, `pytest -k rejects_non_positive` still passes on the base source because the stale cli.cpython-311.pyc is taken as fresh; with PYTHONDONTWRITEBYTECODE=1 from a clean tree it passes on head and fails on base), but scripts/ is outside the package's claimed write set and no other package's claim protects it.",
+      "fix": "Restore scripts/test-scoped.sh to the base commit (6a4dc46) and add a `## Notes` section to nunnarivu/wp-3/package.md stating that the evidence check needs `export PYTHONDONTWRITEBYTECODE=1` in scripts/test-scoped.sh before its pytest run (the base and fixed cli.py have the same size, so a .pyc written by the first run masks the restored source when both writes land in the same second), for the owner or a package whose write set includes scripts/ to make; then rerun `node .nunnarivu/bin/nunnarivu evidence check`."
+    },
+    {
+      "file": "nunnarivu/wp-3/evidence.json",
+      "line": 8,
+      "severity": "minor",
+      "category": "docs",
+      "rule": ".nunnarivu/skills/prove/SKILL.md step 3 (\"implementation: every non-test file this package changed, except files under nunnarivu/wp-<issue>/ ... Every changed file goes in exactly one of the two lists\") and .nunnarivu/skills/fix/SKILL.md step 4",
+      "evidence": "`git diff --stat 6a4dc46..0c7c3f0` lists scripts/test-scoped.sh among the changed files, but nunnarivu/wp-3/evidence.json:8-10 lists only `python/src/pager/cli.py` under implementation.",
+      "fix": "If scripts/test-scoped.sh is reverted per the write-set finding, nothing more is needed; otherwise add \"scripts/test-scoped.sh\" to the implementation list and rerun `node .nunnarivu/bin/nunnarivu evidence check`."
+    },
+    {
+      "file": "python/tests/test_pager.py",
+      "line": null,
+      "severity": "minor",
+      "category": "tests",
+      "rule": "",
+      "evidence": "nunnarivu/wp-3/package.md:9 (criterion 3) requires that piping a, b and c through `python -m pager --size 2` exits 0, prints \"a\\nb\\n\\nc\\n\" and prints nothing on stderr. No test does this: python/tests/test_pager.py:31-40 (test_cli_prints_all_five_lines_as_three_pages) pipes five lines and asserts only returncode and stdout, and no test asserts an empty stderr on a valid run. nunnarivu/wp-3/evidence.json:11 nevertheless claims \"The unchanged tests confirm valid runs (three lines with --size 2 giving 'a', 'b', a blank line, 'c')\", which describes a test that does not exist in the file at base (6a4dc46) or at head.",
+      "fix": "Add a subprocess test that runs [sys.executable, \"-m\", \"pager\", \"--size\", \"2\"] with input \"a\\nb\\nc\\n\" and asserts returncode == 0, stdout == \"a\\nb\\n\\nc\\n\" and stderr == \"\"; then correct the notes in evidence.json to name that test instead of describing the five-line test as a three-line one."
+    }
+  ]
+}
