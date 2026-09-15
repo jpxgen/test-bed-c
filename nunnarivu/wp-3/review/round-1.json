@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "5113fd02a365b7861f67ff6e93985d4fd2737fca",
+  "round": 1,
+  "findings": [
+    {
+      "file": "python/tests/test_pager.py",
+      "line": 56,
+      "severity": "nit",
+      "category": "tests",
+      "rule": "",
+      "evidence": "python/tests/test_pager.py:43-66: test_cli_rejects_size_below_one and test_cli_rejects_negative_size_with_status_2 are the same subprocess call and the same three assertions, differing only in the --size argument (\"0\" at line 45, \"-3\" at line 58).",
+      "fix": "Collapse the two into one test decorated with @pytest.mark.parametrize(\"size\", [\"0\", \"-3\"]) that runs [sys.executable, \"-m\", \"pager\", \"--size\", size] and keeps the three assertions; pytest is already imported."
+    }
+  ]
+}
