@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "245019069d0a997657125c6ec9eab73eec7ce69a",
+  "round": 1,
+  "findings": [
+    {
+      "file": "python/tests/test_pager.py",
+      "line": null,
+      "severity": "minor",
+      "category": "tests",
+      "rule": ".nunnarivu/skills/test/SKILL.md step 2: \"For every acceptance criterion write a test\"",
+      "evidence": "nunnarivu/wp-1/package.md:13 states the criterion \"The command-line tool's handling of a page size below one is unchanged: it still prints its error to stderr and returns as it does today.\" No test covers it: `grep -n \"size\" python/tests/test_pager.py` returns only `test_size_must_be_positive` (the library-level `paginate([1], 0)` case, line 17) and the `--size\", \"2\"` argument of the new CLI test (line 32). The behaviour left unguarded is real and reachable: `printf 'a\\nb\\n' | uv run --frozen python -m pager --size 0` prints `pager: --size must be a positive integer` to stderr and exits 0 (python/src/pager/cli.py:14-16), and nothing in the suite would catch a change to it.",
+      "fix": "Add a subprocess test beside test_cli_prints_all_five_lines_as_three_pages, e.g. test_cli_rejects_size_below_one, that runs [sys.executable, \"-m\", \"pager\", \"--size\", \"0\"] with input \"a\\nb\\n\" and asserts result.returncode == 0, result.stdout == \"\" and \"--size must be a positive integer\" in result.stderr."
+    }
+  ]
+}
