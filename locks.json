@@ -4,15 +4,7 @@
       "python/src/pager/__init__.py",
       "python/tests/test_pager.py",
       "nunnarivu/wp-4/"
-    ],
-    "5": [
-      "ts/src/slug.ts",
-      "ts/test/slug.test.ts",
-      "nunnarivu/wp-5/"
     ]
   },
-  "merge_lock": {
-    "issue": 5,
-    "expires_at": "2026-09-15T20:24:16.964Z"
-  }
+  "merge_lock": null
 }
