@@ -37,3 +37,16 @@ def test_cli_prints_all_five_lines_as_three_pages():
     )
     assert result.returncode == 0
     assert result.stdout == "a\nb\n\nc\nd\n\ne\n"
+
+
+def test_cli_rejects_size_below_one():
+    result = subprocess.run(
+        [sys.executable, "-m", "pager", "--size", "0"],
+        input="a\nb\n",
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0
+    assert result.stdout == ""
+    assert "--size must be a positive integer" in result.stderr
