@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "b2aca63449382b16555c2e68ae5a13d2f3853908",
+  "round": 1,
+  "findings": [
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 36,
+      "severity": "minor",
+      "category": "tests",
+      "rule": "",
+      "evidence": "nunnarivu/wp-2/package.md:14 states the assumption as \"Letters that have no plain ASCII base letter under Unicode decomposition, such as `'ß'` or `'ø'`, are treated as non-letters and become a hyphen\", but the only test for it, ts/test/slug.test.ts:36-38, asserts `slugify('Straße')` alone. 'ø' is untested and exercises a different path: it is stripped rather than turned into an interior hyphen (`slugify('Håkon Ø')` returns 'hakon', verified with node against the new implementation), and an implementation that mapped 'ø' to 'o' would still pass the suite as written.",
+      "fix": "Add an assertion for 'ø' to the assumption test in ts/test/slug.test.ts, e.g. `assert.equal(slugify('Håkon Ørsted'), 'hakon-rsted');`, so the 'ø' half of the criterion is pinned."
+    },
+    {
+      "file": "ts/test/slug.test.ts",
+      "line": 28,
+      "severity": "nit",
+      "category": "tests",
+      "rule": "",
+      "evidence": "ts/test/slug.test.ts:27-28 `assert.equal(slug, 'unicode-numbers-123');` followed by `assert.match(slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);` — once the equality has passed, `slug` is a known literal that the pattern matches, so the second assertion cannot fail and adds no coverage of the shape criterion.",
+      "fix": "Turn the shape check into a real property check: apply the regex over the non-empty results of the other cases too (e.g. iterate 'Crème Brûlée', 'Hello, World!', '--Already--Slugged--', 'Straße' and assert each matches), or drop the redundant `assert.match`."
+    },
+    {
+      "file": "ts/src/slug.ts",
+      "line": 5,
+      "severity": "nit",
+      "category": "docs",
+      "rule": "",
+      "evidence": "ts/src/slug.ts:5-6 says \"Unicode NFD decomposition, then the combining marks are dropped\", but ts/src/slug.ts:15 drops only `/[\\u0300-\\u036f]/g`, the Combining Diacritical Marks block. Marks outside it (Combining Diacritical Marks Extended/Supplement, U+1AB0-U+1AFF, U+1DC0-U+1DFF) survive the strip and are then turned into a separator hyphen by the next replace, which is not what the comment describes.",
+      "fix": "Narrow the comment to the behaviour the code has, e.g. \"the combining diacritical marks U+0300-U+036F are dropped; any other combining mark is treated as a separator\"."
+    }
+  ]
+}
