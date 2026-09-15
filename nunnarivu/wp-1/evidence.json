@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "issue": 1,
+  "type": "logic",
+  "tests": ["python/tests/test_pager.py"],
+  "implementation": ["python/src/pager/__init__.py"],
+  "notes": "The added tests prove that paginate keeps the trailing partial page: five items at two per page yield [[1, 2], [3, 4], [5]] and one item at three per page yields [[1]], while the pre-existing tests confirm that evenly dividing lists, the empty list and the rejection of a page size below one are unchanged. A subprocess test drives `python -m pager --size 2` with five lines and checks that all five are printed as three blank-line-separated pages. With the implementation restored to the base commit the range in paginate stops before the last partial page, so the new tests fail."
+}
