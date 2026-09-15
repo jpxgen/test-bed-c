@@ -1,13 +1,4 @@
 {
-  "write_sets": {
-    "1": [
-      "python/src/pager/__init__.py",
-      "python/tests/test_pager.py",
-      "nunnarivu/wp-1/"
-    ]
-  },
-  "merge_lock": {
-    "issue": 1,
-    "expires_at": "2026-09-15T18:26:30.303Z"
-  }
+  "write_sets": {},
+  "merge_lock": null
 }
