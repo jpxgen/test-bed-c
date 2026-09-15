@@ -1,4 +1,10 @@
 {
-  "write_sets": {},
+  "write_sets": {
+    "2": [
+      "ts/src/slug.ts",
+      "ts/test/slug.test.ts",
+      "nunnarivu/wp-2/"
+    ]
+  },
   "merge_lock": null
 }
