@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "reviewer": "reviewer",
+  "head": "31e3aa6601d923e0698f185e49c8a8a6b055995c",
+  "round": 2,
+  "findings": [
+    {
+      "file": "python/src/pager/__init__.py",
+      "line": 33,
+      "severity": "nit",
+      "category": "correctness",
+      "rule": "",
+      "evidence": "python/src/pager/__init__.py:33 `return -(-len(items) // size)` accepts a non-integer size that `paginate` rejects: `page_count([1], 2.0)` returns `1.0` (a float, not the `int` the docstring and annotation promise) while `paginate([1], 2.0)` raises `TypeError: 'float' object cannot be interpreted as an integer`. Outside the acceptance criteria, which only cover integer sizes; `make check` and `make test` both pass (27 passed).",
+      "fix": "Make _check_size reject non-int sizes (e.g. `if not isinstance(size, int) or isinstance(size, bool) or size < 1: raise ValueError(...)`), or use `len(range(0, len(items), size))` in page_count so both functions fail identically on a non-integer size, and add a test for `page_count([1], 2.0)`."
+    }
+  ]
+}
