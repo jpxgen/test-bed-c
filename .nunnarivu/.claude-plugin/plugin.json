@@ -1,0 +1,9 @@
+{
+  "name": "nunnarivu-factory",
+  "displayName": "nunnarivu factory",
+  "description": "Autonomous software development: issue to tested, reviewed, merged pull request.",
+  "version": "0.1.0",
+  "author": {
+    "name": "jpxgen"
+  }
+}

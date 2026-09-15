@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jpxgen/nunnarivu-factory/plugin/schemas/review.schema.json",
+  "title": "review.json",
+  "description": "One review round of a pull request, as a reviewer writes it (architecture section 5). The kit validates, filters and scores it; a reviewer never scores. Unknown keys fail.",
+  "type": "object",
+  "properties": {
+    "schema": { "const": 1, "description": "Review schema version." },
+    "reviewer": { "type": "string", "description": "Name of the agent that wrote the review." },
+    "head": { "type": "string", "pattern": "^[0-9a-f]{40}$", "description": "Commit the review binds to: the pull request's head, as 40 hex digits." },
+    "round": { "type": "integer", "minimum": 1, "description": "Review round, starting at 1." },
+    "findings": {
+      "type": "array",
+      "description": "One finding per distinct issue; empty when nothing was found.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string", "description": "Path of the file, relative to the repository root." },
+          "line": { "type": ["integer", "null"], "minimum": 1, "description": "Line in the file, or null when the finding has no single line." },
+          "severity": { "enum": ["blocking", "major", "minor", "nit"] },
+          "category": { "enum": ["correctness", "security", "tests", "design", "style", "docs"] },
+          "rule": { "type": "string", "description": "The project rule or standard the finding cites; empty for a general finding." },
+          "evidence": { "type": "string", "description": "What proves the finding: a quoted line, a failing command, a reproduction. Required for blocking and major findings, which are discarded without it." },
+          "fix": { "type": "string", "description": "The change that resolves the finding." }
+        },
+        "required": ["file", "line", "severity", "category", "rule", "evidence", "fix"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schema", "reviewer", "head", "round", "findings"],
+  "additionalProperties": false
+}

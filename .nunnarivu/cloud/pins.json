@@ -1,0 +1,22 @@
+{
+  "uv": {
+    "version": "0.8.17",
+    "artifact": "uv-0.8.17-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "b6d30d02fb65193309fc12a20f9e1a9fab67f469d3e487a254ca1145fd06788f"
+  },
+  "pnpm": {
+    "package": "pnpm",
+    "version": "10.33.0",
+    "sha512": "EFaLtKavtYyes2MNqQzJUWQXq+vT+rvmc58K55VyjaFJHp21pUTHatjrdXD1xLs9bGN7LLQb/c20f6gjyGSTGQ=="
+  },
+  "claude": {
+    "package": "@anthropic-ai/claude-code",
+    "version": "2.1.272",
+    "sha512": "sOwHBM69H8Zka3/D3rc2VNNemPYNlgfYTdhsoqPoXZdK5KcKQlzoue4asJ2RVc+tGb/Pz1qxjVV9nVJQ87W7Ng==",
+    "native": {
+      "package": "@anthropic-ai/claude-code-linux-x64",
+      "version": "2.1.272",
+      "sha512": "QXxOsStovQPz5+hWTQMK7yb4YZFT2mXhu4ejF4nCXHcsbBEBq/jfLWr9SNJCdD4NjD9o4XxjJrDrrdKOM1Kw8g=="
+    }
+  }
+}

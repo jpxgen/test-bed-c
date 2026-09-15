@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "placeholders": {
+    "{{repository}}": "The project repository's origin in https form; `nunnarivu routines` fills it in.",
+    "{{default_branch}}": "The repository's default branch; `nunnarivu routines` fills it in."
+  },
+  "owner_sets": [
+    {
+      "fact": "repository",
+      "detail": "The project repository ({{repository}}): each firing creates a fresh session on it, and the session's GitHub tools are scoped to it. Attach no other repository."
+    },
+    {
+      "fact": "environment",
+      "detail": "The cloud environment configured for the kit: Trusted network access or a custom allow-list, never Full, with plugin/cloud/setup.sh as its setup script (architecture §6 item 4)."
+    },
+    {
+      "fact": "identity",
+      "detail": "The machine user of architecture §6 item 1 (decision NF-013): a write collaborator held off the default branch by rulesets; create the routines while claude.ai is connected to that GitHub account, so every session they start acts as it and never as the owner."
+    }
+  ],
+  "routines": [
+    {
+      "name": "nunnarivu dispatch",
+      "prompt": "dispatch.md",
+      "trigger": { "kind": "schedule", "cron": "0 * * * *" },
+      "fresh_session": true,
+      "notes": "Hourly, and fired on demand from a console session after intake or a merge. Each firing is a fresh session that reconciles, takes in labelled issues, plans with the kit and starts the sessions the plan lists; it starts nothing else."
+    },
+    {
+      "name": "nunnarivu pull-request",
+      "prompt": "pull-request.md",
+      "trigger": { "kind": "pull_request", "events": ["closed"] },
+      "fresh_session": true,
+      "notes": "Fired by the repository's pull-request events. Repairs the state branch when a package's pull request was merged outside the trusted merge or closed without merging; touches nothing else."
+    }
+  ]
+}

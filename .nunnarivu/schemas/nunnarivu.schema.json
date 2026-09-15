@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jpxgen/nunnarivu-factory/plugin/schemas/nunnarivu.schema.json",
+  "title": "nunnarivu.yml",
+  "description": "Project configuration of a repository the kit works on (architecture section 9). Unknown keys fail; project-specific extensions use a top-level key starting with x-.",
+  "type": "object",
+  "properties": {
+    "schema": { "const": 1, "description": "Configuration schema version." },
+    "kit": { "type": "string", "description": "Kit version line the configuration was written for." },
+    "commands": {
+      "type": "object",
+      "description": "Shell commands run in the repository root; an empty string means none.",
+      "properties": {
+        "check": { "type": "string", "description": "Static checks (lint, types, format check)." },
+        "test": { "type": "string", "description": "The whole test suite." },
+        "test_scoped": { "type": "string", "description": "The tests of one package; the kit substitutes the scope." },
+        "e2e": { "type": "string", "description": "End-to-end tests." },
+        "fmt": { "type": "string", "description": "Formatter that rewrites files." }
+      },
+      "required": ["check", "test", "test_scoped", "e2e", "fmt"],
+      "additionalProperties": false
+    },
+    "specialists": {
+      "type": "object",
+      "description": "Project agents that own paths; each key is an agent name.",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "owns": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Globs the agent owns." }
+          },
+          "required": ["owns"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "risk_paths": {
+      "type": "array",
+      "description": "Paths whose changes carry a risk tier and required reviewers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "glob": { "type": "string" },
+          "tier": { "enum": ["low", "medium", "xhigh"] },
+          "reviewers": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["glob", "tier", "reviewers"],
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Evidence types a change can declare; each key is a type name.",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "properties": {
+            "checker": { "type": "string", "description": "Checker that verifies the evidence, e.g. builtin:test-before-after." }
+          },
+          "required": ["checker"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "bar": { "type": "integer", "minimum": 1, "maximum": 5, "description": "Score a change must reach to merge." },
+        "max_rounds": { "type": "integer", "minimum": 1, "description": "Review rounds before a package is marked blocked." }
+      },
+      "required": ["bar", "max_rounds"],
+      "additionalProperties": false
+    },
+    "models": {
+      "type": "object",
+      "description": "Model per risk tier.",
+      "properties": {
+        "low": { "type": "string" },
+        "medium": { "type": "string" },
+        "xhigh": { "type": "string" }
+      },
+      "required": ["low", "medium", "xhigh"],
+      "additionalProperties": false
+    },
+    "capacity": {
+      "type": "object",
+      "properties": {
+        "parallel": { "type": "integer", "minimum": 1, "maximum": 3, "description": "Packages in flight at once." },
+        "weekly_budget_usd": { "type": "number", "minimum": 0, "description": "Weekly spend cap; 0 means the account allocation applies." }
+      },
+      "required": ["parallel", "weekly_budget_usd"],
+      "additionalProperties": false
+    },
+    "owner_only": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Actions that reach the owner, in addition to those the kit always reserves."
+    }
+  },
+  "required": ["schema", "kit", "commands", "review", "models", "capacity", "owner_only"],
+  "patternProperties": {
+    "^x-": { "description": "Project-specific extension; ignored by the kit." }
+  },
+  "additionalProperties": false
+}

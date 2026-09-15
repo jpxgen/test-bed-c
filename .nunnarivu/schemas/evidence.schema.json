@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jpxgen/nunnarivu-factory/plugin/schemas/evidence.schema.json",
+  "title": "nunnarivu/wp-<issue>/evidence.json",
+  "description": "The evidence a work package carries on its branch (KR-04): which files are its tests, which files are the change they prove, and the evidence type a checker in nunnarivu.yml verifies. Unknown keys fail.",
+  "type": "object",
+  "properties": {
+    "schema": { "const": 1, "description": "Evidence schema version." },
+    "issue": { "type": "integer", "minimum": 1, "description": "The work package's issue number." },
+    "type": { "type": "string", "description": "An evidence type declared under evidence: in nunnarivu.yml, e.g. test-before-after." },
+    "tests": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "The package's test files, relative to the repository root."
+    },
+    "implementation": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "The non-test files the package changed, relative to the repository root."
+    },
+    "notes": { "type": "string", "description": "What the tests prove, in the prover's words." }
+  },
+  "required": ["schema", "issue", "type", "tests", "implementation", "notes"],
+  "additionalProperties": false
+}

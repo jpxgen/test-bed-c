@@ -1,0 +1,31 @@
+# Gates: runs the project's checks on pull-request code (nunnarivu factory).
+# Untrusted job: no secrets, no caches, read-only token (KR-15). The trusted
+# merge workflow verifies this check's result before merging.
+name: gates
+
+on:
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: gates-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    name: gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the pull request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0 # the evidence gate needs the merge base with the default branch
+          persist-credentials: false
+
+      - name: Gates
+        run: node .nunnarivu/bin/nunnarivu gate --json

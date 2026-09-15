@@ -1,0 +1,10 @@
+schema: 1
+kit: "0.1"
+commands: { check: "make check", test: "make test", test_scoped: "bash scripts/test-scoped.sh {tests}", e2e: "", fmt: "" }
+specialists: {}
+risk_paths: []
+evidence: { logic: { checker: "builtin:test-before-after" } }
+review: { bar: 5, max_rounds: 3 }
+models: { low: sonnet, medium: opus, xhigh: opus }
+capacity: { parallel: 3, weekly_budget_usd: 0 }
+owner_only: []

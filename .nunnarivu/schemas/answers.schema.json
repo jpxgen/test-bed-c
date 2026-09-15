@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jpxgen/nunnarivu-factory/plugin/schemas/answers.schema.json",
+  "title": "round-<n>.answers.json",
+  "description": "The fix skill's answers to one review round, in the package record (decision NF-012): one entry per kept finding of the round, each fixed or disputed. Unknown keys fail.",
+  "type": "object",
+  "properties": {
+    "schema": { "const": 1, "description": "Answers schema version." },
+    "round": { "type": "integer", "minimum": 1, "description": "The review round answered, matching round-<n>.json." },
+    "head": { "type": "string", "pattern": "^[0-9a-f]{40}$", "description": "The head the round reviewed (the head of round-<n>.json), as 40 hex digits, so the answers bind to the findings they answer." },
+    "answers": {
+      "type": "array",
+      "description": "One answer per kept finding of the round; empty when the round kept none.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string", "description": "The finding's file, relative to the repository root." },
+          "line": { "type": ["integer", "null"], "minimum": 1, "description": "The finding's line, or null when it had none." },
+          "rule": { "type": "string", "description": "The rule the finding cited; empty for a general finding." },
+          "outcome": { "enum": ["fixed", "disputed"], "description": "fixed: the code changed; disputed: the code stays, with a comment on the pull request." },
+          "note": { "type": "string", "description": "What changed, or why the code stays." }
+        },
+        "required": ["file", "line", "rule", "outcome", "note"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schema", "round", "head", "answers"],
+  "additionalProperties": false
+}
