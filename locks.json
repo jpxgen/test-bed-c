@@ -1,4 +1,10 @@
 {
-  "write_sets": {},
+  "write_sets": {
+    "1": [
+      "python/src/pager/__init__.py",
+      "python/tests/test_pager.py",
+      "nunnarivu/wp-1/"
+    ]
+  },
   "merge_lock": null
 }
