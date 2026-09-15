@@ -1,18 +1,10 @@
 {
   "write_sets": {
-    "3": [
-      "python/src/pager/cli.py",
-      "python/tests/test_pager.py",
-      "nunnarivu/wp-3/"
-    ],
     "5": [
       "ts/src/slug.ts",
       "ts/test/slug.test.ts",
       "nunnarivu/wp-5/"
     ]
   },
-  "merge_lock": {
-    "issue": 3,
-    "expires_at": "2026-09-15T19:55:28.739Z"
-  }
+  "merge_lock": null
 }
