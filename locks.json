@@ -6,5 +6,8 @@
       "nunnarivu/wp-1/"
     ]
   },
-  "merge_lock": null
+  "merge_lock": {
+    "issue": 1,
+    "expires_at": "2026-09-15T18:26:30.303Z"
+  }
 }
