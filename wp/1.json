@@ -1,0 +1,10 @@
+{
+  "issue": 1,
+  "station": "ready",
+  "head": null,
+  "attempt": 1,
+  "lease_expires_at": null,
+  "run_url": null,
+  "blocked_reason": null,
+  "updated_at": "2026-09-15T16:53:41.985Z"
+}
